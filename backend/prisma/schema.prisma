@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  bookingId        Int      @id
+  hotelId          Int
+  eventId          Int
+  guestName        String
+  guestPhoneNumber String
+  checkInDate      DateTime
+  checkOutDate     DateTime
+  roomingListLinks RoomingListBooking[]
+}
+
+model RoomingList {
+  roomingListId   Int      @id
+  eventId         Int
+  hotelId         Int
+  eventName       String
+  rfpName         String
+  cutOffDate      DateTime
+  status          String
+  agreement_type  String
+  roomingListLinks RoomingListBooking[]
+}
+
+model RoomingListBooking {
+  id            Int         @id @default(autoincrement())
+  roomingList   RoomingList @relation(fields: [roomingListId], references: [roomingListId])
+  roomingListId Int
+  booking       Booking     @relation(fields: [bookingId], references: [bookingId])
+  bookingId     Int
+
+  @@unique([roomingListId, bookingId])
+}

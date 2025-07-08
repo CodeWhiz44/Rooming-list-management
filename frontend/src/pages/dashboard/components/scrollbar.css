@@ -1,0 +1,28 @@
+.scrollbar-pill {
+    scrollbar-width: 1rem;
+    scrollbar-color: #c9cede #dfe3ec;
+}
+
+.scrollbar-pill::-webkit-scrollbar {
+    height: 5px;
+}
+.scrollbar-pill::-webkit-scrollbar-track {
+    background: #dfe3ec;
+    border-radius: 4px;
+}
+
+.scrollbar-pill::-webkit-scrollbar-thumb {
+    background: #c9cede;
+    border-radius: 4px;
+
+    background-image: repeating-linear-gradient(
+        to right,
+        transparent 0,
+        transparent 60px,
+        #ffffff 60px,
+        #ffffff 66px,
+        transparent 66px,
+        transparent 120px
+    );
+    background-clip: content-box;
+}
