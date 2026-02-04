@@ -24,3 +24,15 @@ export function validateQuery(schema: ZodSchema) {
         }
     };
 }
+
+export function validateParams(schema: ZodSchema) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const validated = await schema.parseAsync(req.params);
+            req.params = validated as any;
+            next();
+        } catch (error) {
+            next(error);
+        }
+    };
+}
