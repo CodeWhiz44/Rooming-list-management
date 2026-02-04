@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { authenticateJWT } from "./middleware/auth.middleware";
+import { errorHandler } from "./middleware/error.middleware";
 
 import authRoutes from "./routes/auth.routes";
 import roomingListRoutes from "./routes/roomingLists.routes";
@@ -20,6 +21,9 @@ app.use(authenticateJWT);
 app.use("/api/rooming-lists", roomingListRoutes);
 app.use("/api/bookings", bookingsRoutes);
 app.use("/api/seed", seedRoutes);
+
+// Error handler middleware (must be last)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001;
 
