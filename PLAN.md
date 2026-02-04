@@ -7,3 +7,9 @@ A update plan to take this MVP from ~40% to production-ready by addressing secur
 - Add Frontend Routing & Protected Routes — Install React Router, create route structure in App.tsx, add login/register pages, implement auth state in roomingListStore.ts, and protect dashboard routes.
 - Improve Testing & DevOps — Move Jest to devDependencies in package.json, remove duplicate @types/react from package.json, add frontend tests with Vitest, and add rate limiting + health check endpoint.
 - Add Documentation & Production Config — Add Swagger/OpenAPI docs, update docker-compose.yml for production builds, and document API endpoints in README.md.
+
+
+Step2: Considerations
+CRUD Scope — Should rooming list/booking creation be not only admin-only or but also available to all authenticated users?
+PDF Generation — The "Download Agreement" button exists but has no backend — implement server-side PDF generation with puppeteer/pdfkit, or defer to a later phase
+Notification System — Add email notifications for booking confirmations, or keep as UI-only with toast messages
