@@ -1,15 +1,19 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRoomingListStore } from "../../store/roomingListStore";
+import { useAuthStore } from "../../store/authStore";
 import Filters from "../../components/Filters";
 import { Button } from "../../components/ui";
 import { createSeedRoomingList } from "../../api/roomingList";
 import type { Store } from "../../store/roomingListStore";
-import { login } from "../../api/auth";
 import toast from "react-hot-toast";
 import InfiniteRoomingList from "./components/InfiniteRoomingList";
 
 const Dashboard: React.FC = () => {
     const fetchLists = useRoomingListStore((s: Store) => s.fetchLists);
+    const logout = useAuthStore((s) => s.logout);
+    const user = useAuthStore((s) => s.user);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchLists();
@@ -25,43 +29,42 @@ const Dashboard: React.FC = () => {
             }
         );
     };
-    const handleLogin = async () => {
-        try {
-            const response = await login("username", "postgreSQL");
-            const token = response.token;
-            localStorage.setItem("token", token);
-            toast.success("Logged in successfully");
-        } catch (err) {
-            console.error("Login Failed:", err);
-            toast.error("Login failed");
-        }
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
     };
 
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="mx-auto max-w-[1368px] px-4">
-                <h1 className="text-2xl font-bold mb-8 mt-11">
-                    Rooming List Management: Events
-                </h1>
+                <div className="flex items-center justify-between mt-6 mb-8">
+                    <h1 className="text-2xl font-bold">
+                        Rooming List Management: Events
+                    </h1>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm text-gray-600">
+                            Logged in as: <strong>{user?.username}</strong>
+                        </span>
+                        <Button
+                            variant="outline"
+                            className="h-10"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </Button>
+                    </div>
+                </div>
 
                 <div className="flex items-center gap-2 mb-8 justify-between">
                     <Filters />
-                    <div className="flex gap-2">
-                        <Button
-                            variant="outline"
-                            className="h-10"
-                            onClick={handleLogin}
-                        >
-                            LogIn
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="h-10"
-                            onClick={handleInsertInit}
-                        >
-                            Insert Intitial Data
-                        </Button>
-                    </div>
+                    <Button
+                        variant="outline"
+                        className="h-10"
+                        onClick={handleInsertInit}
+                    >
+                        Insert Initial Data
+                    </Button>
                 </div>
                 <InfiniteRoomingList />
             </div>
